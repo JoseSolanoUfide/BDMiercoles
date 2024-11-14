@@ -1,0 +1,67 @@
+#Sentencias de la clase
+#Recuerden crear la BD
+#creacion de tablas
+use Clase1311;
+
+CREATE TABLE clientes (
+	id INT IDENTITY(1,1) PRIMARY KEY,
+	nombre VARCHAR(50),
+	ciudad VARCHAR(50),
+	edad INT,
+	email VARCHAR(100)
+);
+
+
+CREATE TABLE pedidos (
+	id INT IDENTITY(1,1) PRIMARY KEY,
+	cliente_id INT,
+	descripcion VARCHAR(100),
+	cantidad INT,
+	fecha_pedido DATE,
+	monto DECIMAL(10,2),
+	FOREIGN KEY(cliente_id) REFERENCES clientes(id)
+);
+
+#Carga de clientes
+
+DECLARE @i INT = 1;
+
+WHILE @i <= 100
+BEGIN
+    INSERT INTO clientes (nombre, ciudad, edad, email)
+    VALUES (
+        CONCAT('Cliente_', @i),
+        CASE (ABS(CHECKSUM(NEWID())) % 5)
+            WHEN 0 THEN 'Madrid'
+            WHEN 1 THEN 'Barcelona'
+            WHEN 2 THEN 'Valencia'
+            WHEN 3 THEN 'Sevilla'
+            WHEN 4 THEN 'Bilbao'
+        END,
+        18 + (ABS(CHECKSUM(NEWID())) % 60), -- Edad entre 18 y 77
+        CONCAT('cliente', @i, '@example.com')
+    );
+    SET @i = @i + 1;
+END;
+
+#Carga de pedidos
+
+
+DECLARE @j INT = 1;
+DECLARE @cliente_id INT;
+
+WHILE @j <= 200
+BEGIN
+    -- Seleccionar un cliente aleatorio
+    SET @cliente_id = (SELECT TOP 1 id FROM clientes ORDER BY NEWID());
+    
+    INSERT INTO pedidos (cliente_id, descripcion, cantidad, fecha_pedido, monto)
+    VALUES (
+        @cliente_id, -- Asegúrate de incluir cliente_id aquí
+        'Producto_' + CAST(@j AS VARCHAR),
+        1 + (ABS(CHECKSUM(NEWID())) % 10), -- Cantidad entre 1 y 10
+        DATEADD(DAY, -(ABS(CHECKSUM(NEWID())) % 365), GETDATE()), -- Fecha en el último año
+        10 + (ABS(CHECKSUM(NEWID())) % 500) -- Monto entre 10 y 509
+    );
+    SET @j = @j + 1;
+END;
