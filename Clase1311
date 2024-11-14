@@ -65,3 +65,42 @@ BEGIN
     );
     SET @j = @j + 1;
 END;
+
+###Selects#
+
+use Clase1311;
+
+
+select count(1), edad
+from clientes
+group by edad
+order by count(1) desc;
+
+
+select *
+from clientes
+where ciudad is not null
+and ciudad = 'Madrid';
+
+select avg(edad)--*--min(edad)
+from clientes
+where edad > 27
+and edad < 45
+and (ciudad = 'Sevilla' OR ciudad='Madrid')
+and email like '%3%';
+
+select count(1) cantidad, edad 
+from clientes
+group by edad
+order by cantidad desc;
+
+
+select avg(edad)
+from clientes;
+
+
+
+select *
+from clientes;
+
+update clientes set ciudad = 'Murcia' where ciudad is null and edad < 35;
