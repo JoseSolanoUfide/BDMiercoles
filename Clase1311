@@ -104,3 +104,64 @@ select *
 from clientes;
 
 update clientes set ciudad = 'Murcia' where ciudad is null and edad < 35;
+
+
+####JOINS
+
+#INNER
+SELECT 
+    c.id AS cliente_id,
+    c.nombre,
+    p.id AS pedido_id,
+    p.descripcion,
+    p.monto
+FROM 
+    clientes c
+INNER JOIN 
+    pedidos p
+ON 
+    c.id = p.cliente_id;
+
+#LEFT JOIN
+SELECT 
+    c.id AS cliente_id,
+    c.nombre,
+    p.id AS pedido_id,
+    p.descripcion,
+    p.monto
+FROM 
+    clientes c
+LEFT JOIN 
+    pedidos p
+ON 
+    c.id = p.cliente_id;
+
+
+#Rigth JOIN
+SELECT 
+    c.id AS cliente_id,
+    c.nombre,
+    p.id AS pedido_id,
+    p.descripcion,
+    p.monto
+FROM 
+    clientes c
+RIGHT JOIN 
+    pedidos p
+ON 
+    c.id = p.cliente_id;
+
+#FULL OUTER JOIN
+SELECT 
+    c.id AS cliente_id,
+    c.nombre,
+    p.id AS pedido_id,
+    p.descripcion,
+    p.monto
+FROM 
+    clientes c
+FULL OUTER JOIN 
+    pedidos p
+ON 
+    c.id = p.cliente_id;
+
